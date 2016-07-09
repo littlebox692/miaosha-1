@@ -1,0 +1,10 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         metadata-complete="true">
+    <!-- 模版创建的webapp项目默认的servlet版本是2.3，需要手动修改为3.0
+    （修改方法为在tomcat安装目录的examples目录下找到web.xml） -->
+
+</web-app>
