@@ -9,7 +9,7 @@ public class SuccessInfo {
     private String successId;
     private long userPhone;
     private short state;
-    private Date creatTime;
+    private Date createTime;
 
     // 持有一个miaosha对象,指定某个商品被成功秒杀
     private Miaosha miaosha;
@@ -50,11 +50,11 @@ public class SuccessInfo {
     }
 
     public Date getCreatTime() {
-        return creatTime;
+        return createTime;
     }
 
     public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+        this.createTime = creatTime;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SuccessInfo {
                 "miaoshaId='" + successId + '\'' +
                 ", userPhone=" + userPhone +
                 ", state=" + state +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 '}';
     }
 }

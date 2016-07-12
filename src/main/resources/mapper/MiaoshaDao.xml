@@ -8,11 +8,11 @@
         <!-- id就是接口中的方法名 -->
         <!-- 下面是具体的sql语句 -->
         update miaosha
-        set number=number-1
+        set number = number-1
         where miaosha_id = #{miaoshaId}
         and start_time <![CDATA[ <= ]]> #{miaoshaTime}
-        and end_time> = #{miaoshaTime}
-        and number>0;
+        and end_time >= #{miaoshaTime}
+        and number > 0;
     </update>
 
     <select id="queryById" resultType="Miaosha" parameterType="long">
@@ -25,7 +25,7 @@
         select miaosha_id, name, number, start_time, end_time, create_time
         from miaosha
         order by miaosha_id
-        limit #{offset} #{limit};
+        limit #{offset}, #{limit};
     </select>
 
 </mapper>

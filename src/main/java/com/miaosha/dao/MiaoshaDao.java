@@ -1,6 +1,7 @@
 package com.miaosha.dao;
 
 import com.miaosha.entity.Miaosha;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,7 @@ public interface MiaoshaDao {
      * @param miaoshaTime
      * @return 更新的记录行数，结果应>=1
      */
-    int reduceNumber(long miaoshaId, Date miaoshaTime);
+    int reduceNumber(@Param("miaoshaId") long miaoshaId, @Param("miaoshaTime") Date miaoshaTime);
 
     /**
      * 通过miaoshaId查询秒杀商品信息
@@ -33,5 +34,5 @@ public interface MiaoshaDao {
      * @param limit
      * @return 查询的秒杀商品列表
      */
-    List<Miaosha> queryAll(int offset, int limit);
+    List<Miaosha> queryAll(@Param("offset") int offset, @Param("limit") int limit);
 }

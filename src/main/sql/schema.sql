@@ -34,7 +34,7 @@ CREATE TABLE success_info(
 `miaosha_id` bigint NOT NULL COMMENT '秒杀成功的商品的id',
 `user_phone` bigint NOT NULL COMMENT '用户电话号码',
 `state` tinyint NOT NULL DEFAULT -1 comment '秒杀的商品状态: -1 表示无效，0 表示成功但未付款，1 表示已付款',
-`create_time` timestamp NOT  NULL DEFAULT current_timestamp comment '该秒杀成功记录的创建时间',
+`create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP comment '该秒杀成功记录的创建时间',
 PRIMARY KEY (miaosha_id,user_phone),/*使用联合主键: 利用商品id和用户电话号码联合确定唯一性，保证同一用户对同一商品不能重复秒杀*/
 KEY idx_create_time(create_time)
 )engine=InnoDB DEFAULT charset=utf8 comment='秒杀成功明细表';

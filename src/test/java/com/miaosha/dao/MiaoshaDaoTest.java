@@ -5,8 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import sun.util.calendar.BaseCalendar;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -32,6 +38,9 @@ public class MiaoshaDaoTest {
 
     @Test
     public void reduceNumber() throws Exception {
+        Date miaoshaTime = new Date();
+        int re = miaoshaDao.reduceNumber(1005, miaoshaTime);
+        System.out.println(re);
 
     }
 
@@ -46,6 +55,12 @@ public class MiaoshaDaoTest {
 
     @Test
     public void queryAll() throws Exception {
+        int offset = 0;
+        int limit = 1000;
+        List<Miaosha> list = miaoshaDao.queryAll(offset, limit);
+        for (Miaosha m : list) {
+            System.out.println(m);
+        }
 
     }
 

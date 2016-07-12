@@ -2,6 +2,7 @@ package com.miaosha.dao;
 
 import com.miaosha.entity.Miaosha;
 import com.miaosha.entity.SuccessInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 
@@ -17,7 +18,7 @@ public interface SuccessDao {
      * @param userPhone
      * @return 插入行数
      */
-    int insertSuccess(long miaoshaId, long userPhone);
+    int insertSuccess(@Param("miaoshaId") long miaoshaId, @Param("userPhone") long userPhone);
 
     /**
      * 通过手机号码和秒杀商品对象联合查询 秒杀成功信息
@@ -25,5 +26,5 @@ public interface SuccessDao {
      * @param miaoshaId
      * @return 秒杀成功信息
      */
-    SuccessInfo querySuccess(long miaoshaId);
+    SuccessInfo querySuccess(@Param("miaoshaId") long miaoshaId, @Param("userPhone") long userPhone);
 }

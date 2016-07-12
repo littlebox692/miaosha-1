@@ -5,8 +5,8 @@
 <mapper namespace="com.miaosha.dao.SuccessDao">
     <insert id="insertSuccess">
         <!--ignore 确保在主键冲突时 不执行插入并返回0-->
-        insert ignore into success_info(miaosha_id, user_phone)
-        values (#{miaoshaId},#{userPhone})
+        insert ignore into success_info(miaosha_id, user_phone, state)
+        values (#{miaoshaId},#{userPhone},0);
     </insert>
 
     <select id="querySuccess" resultType="SuccessInfo">
@@ -21,16 +21,16 @@
         select
         si.miaosha_id,
         si.user_phone,
-        si.create_time,
         si.state,
+        si.create_time,
         ms.miaosha_id "miaosha.miaosha_id",
         ms.name "miaosha.name",
         ms.number "miaosha.number",
         ms.start_time "miaosha.start_time",
         ms.end_time "miaosha.end_time",
-        ms.create_time "miaosha.create_time",
+        ms.create_time "miaosha.create_time"
         from success_info si
-        inner join miaosha ms on si.miaosha_id = ms.miaosha_id <!-- 联合 -->
+        inner join miaosha ms on si.miaosha_id = ms.miaosha_id  <!-- 联合 -->
         where si.miaosha_id = #{miaoshaId};
 
     </select>
