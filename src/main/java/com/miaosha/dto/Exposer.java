@@ -29,8 +29,9 @@ public class Exposer {
         this.miaoshaId = miaoshaId;
     }
 
-    public Exposer(boolean isExposed, long currentTime, long startTime, long endTime) {
+    public Exposer(boolean isExposed, long miaoshaId, long currentTime, long startTime, long endTime) {
         this.isExposed = isExposed;
+        this.miaoshaId = miaoshaId;
         this.currentTime = currentTime;
         this.startTime = startTime;
         this.endTime = endTime;

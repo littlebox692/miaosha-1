@@ -2,6 +2,7 @@ package com.miaosha.dto;
 
 import com.miaosha.entity.Miaosha;
 import com.miaosha.entity.SuccessInfo;
+import com.miaosha.enums.MiaoshaStateEnum;
 
 /**
  * 封装秒杀执行后得到的结果
@@ -13,17 +14,17 @@ public class MiaoshaExecution {
     String stateInfo;
     SuccessInfo successInfo;
 
-    public MiaoshaExecution(long miaoshaId, int state, String stateInfo, SuccessInfo successInfo) {
+    public MiaoshaExecution(long miaoshaId, MiaoshaStateEnum stateEnum, SuccessInfo successInfo) {
         this.miaoshaId = miaoshaId;
-        this.state = state;
-        this.stateInfo = stateInfo;
+        this.state = stateEnum.getState();
+        this.stateInfo = stateEnum.getStateInfo();
         this.successInfo = successInfo;
     }
 
-    public MiaoshaExecution(long miaoshaId, int state, String stateInfo) {
+    public MiaoshaExecution(long miaoshaId, MiaoshaStateEnum stateEnum) {
         this.miaoshaId = miaoshaId;
-        this.state = state;
-        this.stateInfo = stateInfo;
+        this.state = stateEnum.getState();
+        this.stateInfo = stateEnum.getStateInfo();
     }
 
     public long getMiaoshaId() {
@@ -38,16 +39,16 @@ public class MiaoshaExecution {
         return state;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setState(MiaoshaStateEnum stateEnum) {
+        this.state = stateEnum.getState();
     }
 
     public String getStateInfo() {
         return stateInfo;
     }
 
-    public void setStateInfo(String stateInfo) {
-        this.stateInfo = stateInfo;
+    public void setStateInfo(MiaoshaStateEnum stateEnum) {
+        this.stateInfo = stateEnum.getStateInfo();
     }
 
     public SuccessInfo getSuccessInfo() {
