@@ -3,6 +3,9 @@ package com.miaosha.dao;
 import com.miaosha.entity.Miaosha;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sun.util.calendar.BaseCalendar;
@@ -30,38 +33,28 @@ import static org.junit.Assert.*;
 //告诉junit spring的配置文件
 @ContextConfiguration({"classpath:spring/spring-dao.xml"})
 public class MiaoshaDaoTest {
-
-
     // 注入dao实现类依赖
-    @Resource
+    @Autowired
     private MiaoshaDao miaoshaDao;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Test
     public void reduceNumber() throws Exception {
         Date miaoshaTime = new Date();
         int re = miaoshaDao.reduceNumber(1005, miaoshaTime);
-        System.out.println(re);
-
+        logger.info("更新行数={}", re);
     }
 
     @Test
     public void queryById() throws Exception {
 
-        long id = 1005;
-        Miaosha miaosha = miaoshaDao.queryById(id);
-        System.out.println(miaosha.getName());
-        System.out.println(miaosha);
+        Miaosha miaosha = miaoshaDao.queryById(1005);
+        logger.info("miaoshaId-1005={}", miaosha);
     }
 
     @Test
     public void queryAll() throws Exception {
-        int offset = 0;
-        int limit = 1000;
-        List<Miaosha> list = miaoshaDao.queryAll(offset, limit);
-        for (Miaosha m : list) {
-            System.out.println(m);
-        }
-
+        List<Miaosha> list = miaoshaDao.queryAll(0, 1000);
+        logger.info("misoshaList={}", list);
     }
-
 }

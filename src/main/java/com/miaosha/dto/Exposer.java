@@ -5,6 +5,8 @@ package com.miaosha.dto;
  * Created by Yan on 2016/7/12.
  */
 
+import java.util.Date;
+
 /**
  * Exposer类是对要暴露的秒杀url以及其他相关信息的封装
  */
@@ -17,11 +19,11 @@ public class Exposer {
     // 在执行秒杀时，应该将这个md5值传递给执行函数，用于验证
     private String md5;
     // 当前时间
-    private long currentTime;
+    private Date currentTime;
     //秒杀开始时间
-    private long startTime;
+    private Date startTime;
     //秒杀结束时间
-    private long endTime;
+    private Date endTime;
 
     public Exposer(boolean isExposed, String md5, long miaoshaId) {
         this.isExposed = isExposed;
@@ -29,7 +31,8 @@ public class Exposer {
         this.miaoshaId = miaoshaId;
     }
 
-    public Exposer(boolean isExposed, long miaoshaId, long currentTime, long startTime, long endTime) {
+
+    public Exposer(boolean isExposed, long miaoshaId, Date currentTime, Date startTime, Date endTime) {
         this.isExposed = isExposed;
         this.miaoshaId = miaoshaId;
         this.currentTime = currentTime;
@@ -66,27 +69,39 @@ public class Exposer {
         this.md5 = md5;
     }
 
-    public long getCurrentTime() {
+    public Date getCurrentTime() {
         return currentTime;
     }
 
-    public void setCurrentTime(long currentTime) {
+    public void setCurrentTime(Date currentTime) {
         this.currentTime = currentTime;
     }
 
-    public long getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(long startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public long getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Exposer{" +
+                "isExposed=" + isExposed +
+                ", miaoshaId=" + miaoshaId +
+                ", md5='" + md5 + '\'' +
+                ", currentTime=" + currentTime +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
     }
 }

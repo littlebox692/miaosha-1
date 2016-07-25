@@ -1,7 +1,7 @@
 package com.miaosha.service.impl;
 
 import com.miaosha.dao.MiaoshaDao;
-import com.miaosha.dao.SuccessDao;
+import com.miaosha.dao.SuccessInfoDao;
 import com.miaosha.dto.Exposer;
 import com.miaosha.dto.MiaoshaExecution;
 import com.miaosha.entity.Miaosha;
@@ -31,30 +31,30 @@ public class MiaoshaServiceImpl implements MiaoshaService {
 
     // spring容器会自动查找miaoshaDao的实例，并注入到这个service类中
     @Autowired
-    private MiaoshaDao miaosha;
+    private MiaoshaDao miaoshaDao;
     // spring会在IOC容器中自动查找successInfo对象，并自动注入到这个service类中
     @Autowired
-    private SuccessDao successInfo;
+    private SuccessInfoDao successInfoDao;
     private String salt = "sfhsfksjdfh&!%&^!%$(*&";
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Override
     public List<Miaosha> getMiaoshaList() {
-        List<Miaosha> miaoshaList = miaosha.queryAll(0, 5);
+        List<Miaosha> miaoshaList = miaoshaDao.queryAll(0, 1000);
         return miaoshaList;
     }
 
     @Override
     public Miaosha getMiaoshaById(long miaoshaId) {
-        Miaosha m = miaosha.queryById(miaoshaId);
+        Miaosha m = miaoshaDao.queryById(miaoshaId);
         return m;
     }
 
     @Override
     public Exposer exposeMiaoshaUrl(long miaoshaId) {
 
-        Miaosha m = miaosha.queryById(miaoshaId);
+        Miaosha m = miaoshaDao.queryById(miaoshaId);
         if (m == null) {
             return new Exposer(false, miaoshaId);
         }
@@ -62,11 +62,15 @@ public class MiaoshaServiceImpl implements MiaoshaService {
         Date endTime = m.getEndTime();
         Date currentTime = new Date();
         if (currentTime.getTime() < startTime.getTime() || currentTime.getTime() > endTime.getTime()) {
-            return new Exposer(false, miaoshaId, currentTime.getTime(), startTime.getTime(), endTime.getTime());
+            return new Exposer(false, miaoshaId, currentTime, startTime, endTime);
         }
 
         String md5 = getMD5(miaoshaId);
-        return new Exposer(true, md5, miaoshaId);
+        Exposer exposer = new Exposer(true, md5, miaoshaId);
+        exposer.setStartTime(startTime);
+        exposer.setEndTime(endTime);
+        exposer.setCurrentTime(currentTime);
+        return exposer;
     }
 
     private String getMD5(long miaoshaId) {
@@ -86,15 +90,15 @@ public class MiaoshaServiceImpl implements MiaoshaService {
 
         Date currentTime = new Date();
         try {
-            int updateCount = miaosha.reduceNumber(miaoshaId, currentTime);
+            int updateCount = miaoshaDao.reduceNumber(miaoshaId, currentTime);
             if (updateCount <= 0) {
                 throw new MiaoshaCloseException(MiaoshaStateEnum.END.getStateInfo());
             } else {
-                int insertCount = successInfo.insertSuccess(miaoshaId, userPhone);
+                int insertCount = successInfoDao.insertSuccess(miaoshaId, userPhone);
                 if (insertCount <= 0) {
                     throw new RepeatMiaoshaException("miaosha repeat error.");
                 } else {
-                    return new MiaoshaExecution(miaoshaId, MiaoshaStateEnum.SUCCESS, successInfo.querySuccess(miaoshaId, userPhone));
+                    return new MiaoshaExecution(miaoshaId, MiaoshaStateEnum.SUCCESS, successInfoDao.querySuccess(miaoshaId, userPhone));
                 }
             }
         } catch (MiaoshaCloseException e1) {

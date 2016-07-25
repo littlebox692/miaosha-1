@@ -2,22 +2,21 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.miaosha.dao.SuccessDao">
+<mapper namespace="com.miaosha.dao.SuccessInfoDao">
     <insert id="insertSuccess">
         <!--ignore 确保在主键冲突时 不执行插入并返回0-->
         insert ignore into success_info(miaosha_id, user_phone, state)
-        values (#{miaoshaId},#{userPhone},0);
+        values (#{miaoshaId},#{userPhone},1);
     </insert>
 
     <select id="querySuccess" resultType="SuccessInfo">
-
         <!-- 本xml文件名字为SuccessDao对应于dao接口SuccessDao
              id属性即为SuccessDao接口中对应的方法
              id="querySuccess"即对应于SuccessDao中的querySuccess方法
              resultType即为该方法的返回类型
 
              mybatis的优势就是可以自由控制sql语句，因为配置文件中的sql语句都是手动添加的，可以自由进行sql语句优化。
-              -->
+        -->
         select
         si.miaosha_id,
         si.user_phone,
@@ -31,7 +30,6 @@
         ms.create_time "miaosha.create_time"
         from success_info si
         inner join miaosha ms on si.miaosha_id = ms.miaosha_id  <!-- 联合 -->
-        where si.miaosha_id = #{miaoshaId};
-
+        where si.miaosha_id = #{miaoshaId} and si.user_phone = #{userPhone};
     </select>
 </mapper>

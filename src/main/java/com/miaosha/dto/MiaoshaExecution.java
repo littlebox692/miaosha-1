@@ -58,4 +58,14 @@ public class MiaoshaExecution {
     public void setSuccessInfo(SuccessInfo successInfo) {
         this.successInfo = successInfo;
     }
+
+    @Override
+    public String toString() {
+        return "MiaoshaExecution{" +
+                "miaoshaId=" + miaoshaId +
+                ", state=" + state +
+                ", stateInfo='" + stateInfo + '\'' +
+                ", successInfo=" + successInfo +
+                '}';
+    }
 }

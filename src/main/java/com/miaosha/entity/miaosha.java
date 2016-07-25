@@ -9,9 +9,9 @@ public class Miaosha {
     private long miaoshaId;
     private String name;
     private int number;
-    private Date createTime;
     private Date startTime;
     private Date endTime;
+    private Date createTime;
 
     public Miaosha() {
     }
@@ -66,13 +66,13 @@ public class Miaosha {
 
     @Override
     public String toString() {
-        return "SuccessInfo{" +
+        return "Miaosha{" +
                 "miaoshaId=" + miaoshaId +
                 ", name='" + name + '\'' +
                 ", number=" + number +
-                ", createTime=" + createTime +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
+                ", createTime=" + createTime +
                 '}';
     }
 }

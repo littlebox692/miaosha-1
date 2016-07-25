@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by Yan on 2016/7/10.
  */
-public interface SuccessDao {
+public interface SuccessInfoDao {
 
     /**
      * 将成功秒杀的记录插入success_info表中
