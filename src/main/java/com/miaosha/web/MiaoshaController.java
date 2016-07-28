@@ -97,10 +97,12 @@ public class MiaoshaController {
     }
 
     @RequestMapping("/time/now")
+    @ResponseBody
     public MiaoshaResult<Long> getCurrentTime() {
         MiaoshaResult<Long> time = null;
         Date currentTime = new Date();
         time = new MiaoshaResult<Long>(currentTime.getTime());
+        System.out.println("currentTime=" + time.getData());
         return time;
     }
 }

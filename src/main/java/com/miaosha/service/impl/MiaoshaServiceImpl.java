@@ -61,10 +61,11 @@ public class MiaoshaServiceImpl implements MiaoshaService {
         Date startTime = m.getStartTime();
         Date endTime = m.getEndTime();
         Date currentTime = new Date();
+        //若当前时间小于开始时间，或者当前时间大于结束时间，则isExposed为false
         if (currentTime.getTime() < startTime.getTime() || currentTime.getTime() > endTime.getTime()) {
             return new Exposer(false, miaoshaId, currentTime, startTime, endTime);
         }
-
+        //若开始时间 < 当前时间 < 结束时间，则获取md5并设置isExposed为true
         String md5 = getMD5(miaoshaId);
         Exposer exposer = new Exposer(true, md5, miaoshaId);
         exposer.setStartTime(startTime);

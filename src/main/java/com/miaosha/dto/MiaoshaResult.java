@@ -13,19 +13,19 @@ public class MiaoshaResult<T> {
     //若失败，error用于指示错误信息
     private String error;
 
+    public MiaoshaResult(boolean success, String error) {
+        this.success = success;
+        this.error = error;
+    }
+
     public MiaoshaResult(boolean success, T data) {
         this.success = success;
         this.data = data;
     }
 
-    public MiaoshaResult(boolean success, String error) {
-
-        this.success = success;
-        this.error = error;
-    }
-
     public MiaoshaResult(T data) {
         this.data = data;
+        this.success = true;
     }
 
     public boolean isSuccess() {
