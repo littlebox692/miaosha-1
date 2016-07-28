@@ -13,7 +13,7 @@ import java.util.Date;
 public class Exposer {
 
     // 指示是否已开启秒杀系统，若开启则为true，否则为false
-    private boolean isExposed;
+    private boolean flag;//isExposed
     // 秒杀商品ID
     private long miaoshaId;
     // 在执行秒杀时，应该将这个md5值传递给执行函数，用于验证
@@ -26,14 +26,14 @@ public class Exposer {
     private Date endTime;
 
     public Exposer(boolean isExposed, String md5, long miaoshaId) {
-        this.isExposed = isExposed;
+        this.flag = isExposed;
         this.md5 = md5;
         this.miaoshaId = miaoshaId;
     }
 
 
     public Exposer(boolean isExposed, long miaoshaId, Date currentTime, Date startTime, Date endTime) {
-        this.isExposed = isExposed;
+        this.flag = isExposed;
         this.miaoshaId = miaoshaId;
         this.currentTime = currentTime;
         this.startTime = startTime;
@@ -41,16 +41,16 @@ public class Exposer {
     }
 
     public Exposer(boolean isExposed, long miaoshaId) {
-        this.isExposed = isExposed;
+        this.flag = isExposed;
         this.miaoshaId = miaoshaId;
     }
 
-    public boolean isExposed() {
-        return isExposed;
+    public boolean isFlag() {
+        return flag;
     }
 
-    public void setExposed(boolean exposed) {
-        isExposed = exposed;
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     public long getMiaoshaId() {
@@ -96,7 +96,7 @@ public class Exposer {
     @Override
     public String toString() {
         return "Exposer{" +
-                "isExposed=" + isExposed +
+                "isExposed=" + flag +
                 ", miaoshaId=" + miaoshaId +
                 ", md5='" + md5 + '\'' +
                 ", currentTime=" + currentTime +

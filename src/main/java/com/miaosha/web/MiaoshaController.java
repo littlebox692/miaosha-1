@@ -86,13 +86,13 @@ public class MiaoshaController {
             return result;
         } catch (RepeatMiaoshaException e) {
             MiaoshaExecution execution = new MiaoshaExecution(miaoshaId, MiaoshaStateEnum.REPEAT_MIAOSHA);
-            return new MiaoshaResult<MiaoshaExecution>(false, execution);
+            return new MiaoshaResult<MiaoshaExecution>(true, execution);
         } catch (MiaoshaCloseException e) {
             MiaoshaExecution execution = new MiaoshaExecution(miaoshaId, MiaoshaStateEnum.END);
-            return new MiaoshaResult<MiaoshaExecution>(false, execution);
+            return new MiaoshaResult<MiaoshaExecution>(true, execution);
         } catch (MiaoshaException e) {
             MiaoshaExecution execution = new MiaoshaExecution(miaoshaId, MiaoshaStateEnum.INNER_ERROR);
-            return new MiaoshaResult<MiaoshaExecution>(false, execution);
+            return new MiaoshaResult<MiaoshaExecution>(true, execution);
         }
     }
 

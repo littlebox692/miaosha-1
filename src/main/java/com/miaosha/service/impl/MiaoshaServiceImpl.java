@@ -71,6 +71,8 @@ public class MiaoshaServiceImpl implements MiaoshaService {
         exposer.setStartTime(startTime);
         exposer.setEndTime(endTime);
         exposer.setCurrentTime(currentTime);
+        System.err.println(exposer);
+        System.err.println(exposer.isFlag());
         return exposer;
     }
 

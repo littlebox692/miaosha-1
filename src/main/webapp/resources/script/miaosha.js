@@ -14,7 +14,6 @@ var miaosha = {
         }
     },
 
-
     // 判断手机号码是否合法
     validPhone: function (phone) {
         if (phone && phone.length == 11 && !isNaN(phone)) {
@@ -32,10 +31,11 @@ var miaosha = {
             //function是一个回调函数，在controller执行完exposeurl之后调用
             if (result && result['success']) {
                 var exposer = result['data'];
-                if (exposer['isExposed'] == true) {
+                console.log(exposer);
+                if (exposer['flag'] == true) {
                     //若开启秒杀，则将执行秒杀的url post给controller
                     var md5 = exposer['md5'];
-                    var miaoshaUrl = miaosha.execution(miaoshaId, md5);
+                    var miaoshaUrl = miaosha.URL.execution(miaoshaId, md5);
                     console.log("miaoshaUrl:" + miaoshaUrl);
                     //给按钮绑定一个一次点击事件
                     $('#executeBtn').one('click', function () {
@@ -48,12 +48,13 @@ var miaosha = {
                                 var miaoshaExecution = result['data'];
                                 var state = miaoshaExecution['state'];
                                 var stateInfo = miaoshaExecution['stateInfo'];
-                                node.html('<span class="label lable-success">' + stateInfo + '</span>');
+                                node.html('<span class="label label-success">' + stateInfo + '</span>');
                             }
                         });
                     });
                     //这里调用show()方法是因为前面line: 18把node节点隐藏了，所以调用show才能将节点显示出来。
                     //绑定的点击事件完成后，调用show方法显示。
+                    console.log("method node.show() is running ...");
                     node.show();
                 } else {
                     //若未开启秒杀，可能是因为系统时间与用户时间不一致，则重新倒计时
@@ -86,6 +87,7 @@ var miaosha = {
             });
         } else {
             //秒杀开始
+            console.log("miaosha begin ...");
             miaosha.handleMiaosha(miaoshaId, miaoshaBox);
         }
     },
@@ -123,15 +125,13 @@ var miaosha = {
             $.get(miaosha.URL.now(), {}, function (result) {
                 if (result && result['success']) {
                     var currentTime = result['data'];
-                    console.log("currentTime=" + currentTime);
+                    console.log("countDown start ...");
                     miaosha.countDown(miaoshaId, startTime, endTime, currentTime);
                 } else {
                     console.log("result=" + result);
                     alert("result:" + result);
                 }
             });
-
         }
     }
-
 };
