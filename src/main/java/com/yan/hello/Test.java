@@ -21,9 +21,10 @@ public class Test {
         String s3 = "a";
         String s4 = "bc";
         String s5 = s3 + s4;
+        String s6 = new String("abc");
 
         System.out.println(s1 == s2);
-        System.out.println(s5.intern());
+        System.out.println(s6.intern() == s1);
         System.out.println(s1 == s5);
         //------------------------------------------------
         //三种方式获得类文件对象
