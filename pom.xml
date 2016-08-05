@@ -18,7 +18,6 @@
             <scope>test</scope>
         </dependency>
         <!-- 补全依赖-->
-
         <!--
             1. 日志：Java日志：slf4j，log4j，logback，common-logging
             slf4j是规范/接口。
@@ -43,7 +42,6 @@
               3.web层依赖：web，webmvc
               4.test依赖：test
         -->
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -142,7 +140,6 @@
             <artifactId>spring-beans</artifactId>
             <version>4.2.6.RELEASE</version>
         </dependency>
-
         <dependency>
             <!--spring jdbc依赖-->
             <groupId>org.springframework</groupId>
@@ -189,7 +186,6 @@
             <artifactId>protostuff-runtime</artifactId>
             <version>1.0.8</version>
         </dependency>
-
     </dependencies>
     <build>
         <finalName>helloTest</finalName>
