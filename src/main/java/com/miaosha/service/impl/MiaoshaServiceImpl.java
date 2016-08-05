@@ -2,6 +2,7 @@ package com.miaosha.service.impl;
 
 import com.miaosha.dao.MiaoshaDao;
 import com.miaosha.dao.SuccessInfoDao;
+import com.miaosha.dao.cache.RedisDao;
 import com.miaosha.dto.Exposer;
 import com.miaosha.dto.MiaoshaExecution;
 import com.miaosha.entity.Miaosha;
@@ -37,6 +38,8 @@ public class MiaoshaServiceImpl implements MiaoshaService {
     private SuccessInfoDao successInfoDao;
     private String salt = "sfhsfksjdfh&!%&^!%$(*&";
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private RedisDao redisDao;
 
 
     @Override
@@ -54,9 +57,23 @@ public class MiaoshaServiceImpl implements MiaoshaService {
     @Override
     public Exposer exposeMiaoshaUrl(long miaoshaId) {
 
-        Miaosha m = miaoshaDao.queryById(miaoshaId);
+        /**
+         * 使用redis对数据库查询进行缓存
+         * get from cache
+         * if null
+         *      访问数据库
+         *      写入redis缓存
+         * else
+         *      logic
+         */
+        Miaosha m = redisDao.getMiaosha(miaoshaId);
         if (m == null) {
-            return new Exposer(false, miaoshaId);
+            m = miaoshaDao.queryById(miaoshaId);
+            if (m == null) {
+                return new Exposer(false, miaoshaId);
+            } else {
+                String redisPutResult = redisDao.putMiaosha(m);
+            }
         }
         Date startTime = m.getStartTime();
         Date endTime = m.getEndTime();
@@ -90,26 +107,23 @@ public class MiaoshaServiceImpl implements MiaoshaService {
         if (md5 == null || !md5.equals(getMD5(miaoshaId))) {
             throw new MiaoshaException("miaosha rewrite error.");
         }
-
-        Date currentTime = new Date();
         try {
-            int updateCount = miaoshaDao.reduceNumber(miaoshaId, currentTime);
-            if (updateCount <= 0) {
-                throw new MiaoshaCloseException(MiaoshaStateEnum.END.getStateInfo());
+            int insertCount = successInfoDao.insertSuccess(miaoshaId, userPhone);
+            if (insertCount <= 0) {
+                throw new RepeatMiaoshaException("miaosha repeat error.");
             } else {
-                int insertCount = successInfoDao.insertSuccess(miaoshaId, userPhone);
-                if (insertCount <= 0) {
-                    throw new RepeatMiaoshaException("miaosha repeat error.");
+                Date currentTime = new Date();
+                int updateCount = miaoshaDao.reduceNumber(miaoshaId, currentTime);
+                if (updateCount <= 0) {
+                    throw new MiaoshaCloseException(MiaoshaStateEnum.END.getStateInfo());
                 } else {
                     return new MiaoshaExecution(miaoshaId, MiaoshaStateEnum.SUCCESS, successInfoDao.querySuccess(miaoshaId, userPhone));
                 }
             }
         } catch (MiaoshaCloseException e1) {
-
             throw e1;
         } catch (RepeatMiaoshaException e2) {
             throw e2;
-
         } catch (MiaoshaException e3) {
             logger.error(e3.getMessage(), e3);
             throw new MiaoshaException("miaosha error", e3);

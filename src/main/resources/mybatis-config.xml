@@ -13,7 +13,5 @@
         <setting name="useColumnLabel" value="true"/>
         <!-- 使用驼峰命名法转换 ：如 mysql:Table(create_time) -> java:Entity(createTime) -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-
     </settings>
-
 </configuration>

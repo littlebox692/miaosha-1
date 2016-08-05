@@ -1,51 +1,14 @@
 package com.yan.hello;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by Yan on 2016/7/9.
  */
-
-class Y {
-
-}
-
-class Fu extends Y {
-    String name = "fu";
-    int age = 123;
-
-    public Fu() {
-    }
-
-    public Fu(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public static void show() {
-        System.out.println("Fu show()...");
-    }
-}
-
-class Zi extends Fu {
-
-    public Zi() {
-    }
-
-    public Zi(String name, int age) {
-        super();
-    }
-
-    public static void show() {
-        System.out.println("Zi show()...");
-    }
-}
 
 public class Main {
     String name = null;
@@ -54,8 +17,90 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Zi z = new Zi("A", 12);
-        System.out.println(z.name);
+        //-------------------------------------------
+        MyThreadFactory myFactory = new MyThreadFactory();
+        Thread t = myFactory.newThread(new MyRunnable());
+        LinkedBlockingQueue<Runnable> queue = new LinkedBlockingQueue<>(20);
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 60, TimeUnit.SECONDS, queue, Executors.defaultThreadFactory());
+        ExecutorService executorService = Executors.newFixedThreadPool(5, Executors.defaultThreadFactory());
+        executorService.execute(new MyRunnable());
+        Thread t1 = new Thread(new MyRun(true));
+        Thread t2 = new Thread(new MyRun(false));
+        t1.start();
+        t2.start();
+        Lock lock = new ReentrantLock();
+        Condition condition = lock.newCondition();
+        ReentrantReadWriteLock re = new ReentrantReadWriteLock();
+        ReentrantReadWriteLock.ReadLock readLock = re.readLock();
+        try {
+            lock.lock();
+            System.out.println();
+            condition.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+            condition.signal();
+        }
+
+    }
+
+}
+
+class MyThreadFactory implements ThreadFactory {
+    @Override
+    public Thread newThread(Runnable r) {
+        return new Thread(r);
+    }
+}
+
+class MyRunnable implements Runnable {
+
+    Object oj = new Object();
+
+    static {
+        System.out.println();
+    }
+
+    public synchronized void run() {
+        synchronized (MyRunnable.class) {
+            System.out.println(" this is the synchronized block ...");
+        }
+        System.out.println("override method run ...");
+    }
+}
+
+
+class Mylock {
+    static final Object obj1 = new Object();
+    static final Object obj2 = new Object();
+}
+
+class MyRun implements Runnable {
+
+    private boolean flag;
+
+    public MyRun(boolean flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public void run() {
+        if (flag) {
+            synchronized (Mylock.obj1) {
+                System.out.println("if obj1 lock ...");
+                synchronized (Mylock.obj2) {
+                    System.out.println("if obj2 lock");
+                }
+            }
+        } else {
+            synchronized (Mylock.obj2) {
+                System.out.println("else obj2 lock ...");
+                synchronized (Mylock.obj1) {
+                    System.out.println("else obj1 lock ...");
+                }
+            }
+        }
     }
 }
 
